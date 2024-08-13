@@ -51,7 +51,7 @@ public class TmdbService {
         int page = 1;
         final int maxPages = 20;
 
-        // 장르 목록을 미리 가져와서 캐시
+        // 장르 목록을 미리 가져와서 캐시.
         Map<Integer, GenreDto> genreMap = fetchGenres();
 
         try {
