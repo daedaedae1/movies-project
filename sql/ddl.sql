@@ -14,6 +14,7 @@ create table movie(
    poster_path  varchar(255)    not null,
    tmdb_id      VARCHAR(255)    not null
 );
+
 * 속성 변경
 ALTER TABLE movie MODIFY overview MEDIUMTEXT;
 
@@ -31,14 +32,4 @@ CREATE TABLE movie_genre(
    PRIMARY KEY(movie_id, genre_id),
    FOREIGN KEY(movie_id) REFERENCES movie(id),
    FOREIGN KEY(genre_id) REFERENCES genre(id)
-);
-
-CREATE TABLE user_movie_status (
-    id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    movie_id BIGINT NOT NULL,
-    watched BOOLEAN NOT NULL DEFAULT FALSE,
-    UNIQUE KEY unique_user_movie (user_id, movie_id),
-    FOREIGN KEY (user_id) REFERENCES user(id),
-    FOREIGN KEY (movie_id) REFERENCES movie(id)
 );

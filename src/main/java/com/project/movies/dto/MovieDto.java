@@ -15,7 +15,7 @@ public class MovieDto {
 
     private String overview;
 
-    @JsonProperty("poster_path")	// 이 부분이 중요. JSON의 key와 일치해야 .
+    @JsonProperty("poster_path")	// 이 부분이 중요. JSON의 key와 일치해야 함.
     private String posterPath; // 포스터 이미지 경로
 
     @JsonProperty("id")

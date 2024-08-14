@@ -147,12 +147,12 @@ public class TmdbService {
         if (existingMovieOpt.isPresent()) {
             // 기존 영화 엔티티가 존재하는 경우
             Movie existingMovie = existingMovieOpt.get();
-            // 업데이트가 필요한 필드들을 설정
+            // 업데이트가 필요한 필드들을 설정.
             existingMovie.setTitle(movie.getTitle());
             existingMovie.setOverview((movie.getOverview() != null && !movie.getOverview().isEmpty()) ? movie.getOverview() : "No overview");
             existingMovie.setPosterPath(movie.getPosterPath());
             existingMovie.setGenres(movie.getGenres());
-            // 업데이트된 엔티티를 저장
+            // 업데이트된 엔티티를 저장.
             movieRepository.save(existingMovie);
         } else {
             // 새 영화 엔티티인 경우

@@ -61,14 +61,14 @@ public class UserController {
     // /api/update
     @PostMapping("/{userid}/update")
     public ResponseEntity<?> update(@RequestBody User user) {
-        // UserService를 사용하여 사용자 정보를 업데이트합니다.
+        // UserService를 사용하여 사용자 정보를 업데이트.
         User updatedUser = userService.updateUser(user);
-        // 업데이트된 사용자 정보가 null이 아니라면 성공적으로 업데이트된 것으로 간주합니다.
+        // 업데이트된 사용자 정보가 null이 아니라면 성공적으로 업데이트된 것으로 간주.
         if (updatedUser != null) {
-            // 성공적으로 업데이트되었다는 응답을 반환합니다.
+            // 성공적으로 업데이트되었다는 응답을 반환.
             return ResponseEntity.ok().body(Map.of("success", true, "updatedUser", updatedUser));
         } else {
-            // 업데이트에 실패했다면, 클라이언트에게 적절한 에러 메시지를 반환합니다.
+            // 업데이트에 실패했다면, 클라이언트에게 적절한 에러 메시지를 반환.
             return ResponseEntity.badRequest().body(Map.of("success", false, "message", "User update failed."));
         }
     }
