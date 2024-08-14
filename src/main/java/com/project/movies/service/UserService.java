@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import com.project.movies.model.User;
 import com.project.movies.repository.UserRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -47,7 +49,12 @@ public class UserService {
 
     public void deleteUser(String userid) {
         Optional<User> user = userRepository.findByUserid(userid);
-        userRepository.deleteById(user.get().getId());
+        if (user.isPresent()) {
+            userRepository.deleteById(user.get().getId());
+        } else {
+            throw new EntityNotFoundException("User not found with userid: " + userid);
+        }
     }
+
 
 }
