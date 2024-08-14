@@ -1,6 +1,7 @@
 package com.project.movies.service;
 
 import com.project.movies.model.Movie;
+import com.project.movies.model.User;
 import com.project.movies.repository.MovieRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -34,5 +35,4 @@ public class MovieService {
         return movieRepository.save(movie);
     }
 
-    // 기타 필요한 메서드 추가 (예: findById, delete, etc.)
 }

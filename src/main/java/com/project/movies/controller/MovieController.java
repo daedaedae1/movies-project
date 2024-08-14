@@ -4,11 +4,14 @@ import com.project.movies.model.Movie;
 import com.project.movies.service.MovieService;
 import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-@CrossOrigin(origins = "http://localhost:8081", allowCredentials = "true")
+import java.util.Map;
+
 @RestController
 @RequestMapping("/movies")
+@CrossOrigin(origins = "http://localhost:8081", allowCredentials = "true") // 필요한 경우 CORS 설정
 public class MovieController {
 
     private final MovieService movieService;
