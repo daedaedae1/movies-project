@@ -18,8 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 
-@CrossOrigin(origins = "http://localhost:8081", allowCredentials = "true")
 @RestController		// rest와 그냥의 차이 알아두기
+@CrossOrigin(origins = "http://localhost:8081", allowCredentials = "true")
 @RequestMapping("/api")
 public class UserController {
 

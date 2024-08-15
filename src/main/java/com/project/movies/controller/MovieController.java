@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/movies")
 @CrossOrigin(origins = "http://localhost:8081", allowCredentials = "true") // 필요한 경우 CORS 설정
+@RequestMapping("/movies")
 public class MovieController {
 
     private final MovieService movieService;

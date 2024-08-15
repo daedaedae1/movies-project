@@ -33,3 +33,11 @@ CREATE TABLE movie_genre(
    FOREIGN KEY(movie_id) REFERENCES movie(id),
    FOREIGN KEY(genre_id) REFERENCES genre(id)
 );
+
+CREATE TABLE viewing_history (
+    id BIGINT AUTO_INCREMENT PRIMARY KEY,
+    user_id BIGINT NOT NULL,
+    movie_id BIGINT NOT NULL,
+    FOREIGN KEY (user_id) REFERENCES user(id),
+    FOREIGN KEY (movie_id) REFERENCES movie(id)
+);
