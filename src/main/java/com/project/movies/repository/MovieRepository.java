@@ -1,5 +1,6 @@
 package com.project.movies.repository;
 
+import java.util.List;
 import java.util.Optional;
 
 import com.project.movies.model.Movie;
@@ -15,5 +16,28 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
     Page<Movie> findByTitleContainingIgnoreCaseWithoutSpaces(@Param("title") String title, Pageable pageable);
 
     Optional<Movie> findByTmdbId(Long tmdbId);
+
+    @Query("SELECT m.id FROM Movie m " +
+            "JOIN m.genres g " +
+            "WHERE g.id IN (" +
+            "   SELECT g.id FROM Genre g " +
+            "   JOIN g.movies m2 " +
+            "   JOIN ViewingHistory vh ON m2.id = vh.movieId " +
+            "   WHERE vh.userId = :userId" +
+            ") AND m.id NOT IN (" +
+            "   SELECT vh.movieId FROM ViewingHistory vh WHERE vh.userId = :userId" +
+            ")")
+    List<Long> findRecommendedMovieIds(@Param("userId") Long userId);
+
+    @Query("SELECT m FROM Movie m " +
+            "JOIN ViewingHistory vh ON m.id = vh.movieId " +
+            "WHERE vh.userId IN (SELECT vh2.userId FROM ViewingHistory vh2 WHERE vh2.movieId IN :movieIds) " +
+            "AND m.id NOT IN :movieIds " +
+            "GROUP BY m.id " +
+            "ORDER BY COUNT(vh.userId) DESC")
+    List<Movie> findCollaborativeRecommendations(@Param("movieIds") List<Long> movieIds);
+
+    @Query("SELECT vh.movieId FROM ViewingHistory vh WHERE vh.userId = :userId")
+    List<Long> findMoviesWatchedByUser(@Param("userId") Long userId);
 
 }

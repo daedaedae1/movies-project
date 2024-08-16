@@ -18,8 +18,12 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public Optional<User> findUserById(String userid) {
+    public Optional<User> findUserByUserid(String userid) {
         return userRepository.findByUserid(userid);
+    }
+
+    public Optional<User> findUserById(Long userId) {
+        return userRepository.findById(userId);
     }
 
     public boolean validateUserLogin(String userid, String pwd) {
@@ -29,8 +33,7 @@ public class UserService {
 
     public User updateUser(User user) {
         // userid를 사용하여 데이터베이스에서 기존 사용자 정보 조회.
-        Optional<User> userOptional = userRepository.findByUserid(user.getUserid());
-
+        Optional<User> userOptional = userRepository.findById(Long.valueOf(user.getUserid()));
         // 해당 사용자가 존재하면 정보 업데이트.
         if (userOptional.isPresent()) {
             User existingUser = userOptional.get();

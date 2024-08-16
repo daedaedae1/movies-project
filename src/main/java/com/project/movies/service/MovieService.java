@@ -8,6 +8,9 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 @Service
 public class MovieService {
 
@@ -34,4 +37,26 @@ public class MovieService {
         return movieRepository.save(movie);
     }
 
+    public List<Movie> getContentBasedRecommendations(Long userId) {
+        // 사용자 시청 기록에서 장르 ID를 가져옵니다.
+        List<Long> viewedMovieIds = movieRepository.findMoviesWatchedByUser(userId);
+        if (viewedMovieIds.isEmpty()) {
+            return List.of(); // 시청 기록이 없는 경우 빈 목록 반환
+        }
+
+        // 시청 기록에 기반하여 추천할 영화의 ID 목록을 가져옵니다.
+        List<Long> recommendedMovieIds = movieRepository.findRecommendedMovieIds(userId);
+
+        // 추천 영화 목록을 가져옵니다.
+        return movieRepository.findAllById(recommendedMovieIds);
+    }
+
+    // 협업 필터링 추천 메소드
+    public List<Movie> getCollaborativeFilteringRecommendations(Long userId) {
+        List<Long> movieIds = movieRepository.findMoviesWatchedByUser(userId);
+        if (movieIds.isEmpty()) {
+            return List.of(); // 시청 기록이 없는 경우 빈 목록 반환
+        }
+        return movieRepository.findCollaborativeRecommendations(movieIds);
+    }
 }

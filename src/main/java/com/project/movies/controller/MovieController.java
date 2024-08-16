@@ -6,6 +6,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @CrossOrigin(origins = "http://localhost:8081", allowCredentials = "true") // 필요한 경우 CORS 설정
 @RequestMapping("/movies")
@@ -31,6 +33,18 @@ public class MovieController {
             @RequestParam(name = "page", defaultValue = "0") int page,
             @RequestParam(name = "size", defaultValue = "10") int size) {
         return movieService.searchMovies(query, page, size);
+    }
+
+    @GetMapping("/recommend/content")
+    public List<Movie> getContentBasedRecommendations(
+            @RequestParam("userId") Long userId) {
+        return movieService.getContentBasedRecommendations(userId);
+    }
+
+    @GetMapping("/recommend/collaborative")
+    public List<Movie> getCollaborativeFilteringRecommendations(
+            @RequestParam("userId") Long userId) {
+        return movieService.getCollaborativeFilteringRecommendations(userId);
     }
 
 }

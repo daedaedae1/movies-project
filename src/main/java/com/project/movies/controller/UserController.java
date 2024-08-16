@@ -39,18 +39,21 @@ public class UserController {
         String pwd = credentials.get("pwd");
 
         // Implement your own login logic in the UserService
-        boolean isValidUser = userService.validateUserLogin(userid, pwd);
-        if (isValidUser) {
+        Optional<User> user = userService.findUserByUserid(userid);
+        if (user.isPresent()) {
             session.setAttribute("LOGIN_USER_ID", userid);
-            return ResponseEntity.ok().body(Map.of("success", true));
+            return ResponseEntity.ok().body(Map.of(
+                    "success", true,
+                    "id", user.get().getId() // 로그인 성공 시 사용자 ID를 반환
+            ));
         } else {
             return ResponseEntity.badRequest().body(Map.of("success", false));
         }
     }
 
     @GetMapping("/details/{userid}")
-    public ResponseEntity<?> getUserDetails(@PathVariable("userid") String userid) {
-        Optional<User> user = userService.findUserById(userid);
+    public ResponseEntity<?> getUserDetails(@PathVariable("userid") Long userId) {
+        Optional<User> user = userService.findUserById(userId);
         if (user.isPresent()) {
             return ResponseEntity.ok(user.get());
         } else {
