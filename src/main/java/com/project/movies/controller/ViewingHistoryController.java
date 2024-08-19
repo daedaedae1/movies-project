@@ -2,6 +2,7 @@
     import com.project.movies.model.ViewingHistory;
     import com.project.movies.service.ViewingHistoryService;
     import org.springframework.beans.factory.annotation.Autowired;
+    import org.springframework.http.HttpStatus;
     import org.springframework.http.ResponseEntity;
     import org.springframework.web.bind.annotation.*;
 
@@ -28,4 +29,14 @@
             List<ViewingHistory> viewingHistory = viewingHistoryService.getViewingHistoryByUserId(userId);
             return ResponseEntity.ok(viewingHistory);
         }
+
+        // 시청 기록 삭제 API
+        @DeleteMapping
+        public ResponseEntity<Void> deleteViewingHistory(
+                @RequestParam("userId") Long userId,
+                @RequestParam("movieId") Long movieId) {
+            viewingHistoryService.deleteViewingHistory(userId, movieId);
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
     }

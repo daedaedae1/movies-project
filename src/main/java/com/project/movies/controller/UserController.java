@@ -26,6 +26,13 @@ public class UserController {
     @Autowired
     private UserService userService;
 
+    // 중복 아이디 확인 API
+    @GetMapping("/checkUserId/{userid}")
+    public ResponseEntity<?> checkUserId(@PathVariable("userid") String userid) {
+        boolean exists = userService.isUserIdExists(userid);
+        return ResponseEntity.ok(Map.of("exists", exists));
+    }
+
     @PostMapping("/signup")
     public ResponseEntity<?> signup(@RequestBody User user) {
         User savedUser = userService.addUser(user);
@@ -38,9 +45,10 @@ public class UserController {
         String userid = credentials.get("userid");
         String pwd = credentials.get("pwd");
 
-        // Implement your own login logic in the UserService
         Optional<User> user = userService.findUserByUserid(userid);
-        if (user.isPresent()) {
+        boolean success = userService.validateUserLogin(userid, pwd);
+
+        if (success && user.isPresent()) {
             session.setAttribute("LOGIN_USER_ID", userid);
             return ResponseEntity.ok().body(Map.of(
                     "success", true,
@@ -49,6 +57,13 @@ public class UserController {
         } else {
             return ResponseEntity.badRequest().body(Map.of("success", false));
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<?> logout(HttpSession session) {
+        // 현재 세션을 무효화
+        session.invalidate();
+        return ResponseEntity.ok().body(Map.of("success", true));
     }
 
     @GetMapping("/details/{userid}")
@@ -77,8 +92,8 @@ public class UserController {
     }
 
     @DeleteMapping("/{userid}/delete")
-    public ResponseEntity<?> delete(@PathVariable("userid") String userid) {
-        userService.deleteUser(userid);
+    public ResponseEntity<?> delete(@PathVariable("userid") Long userId) {
+        userService.deleteUser(userId);
         return ResponseEntity.ok().body(Map.of("success", true));
     }
 

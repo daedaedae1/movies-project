@@ -4,7 +4,9 @@ import java.util.Optional;
 
 import com.project.movies.model.User;
 import com.project.movies.repository.UserRepository;
+import com.project.movies.repository.ViewingHistoryRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,14 @@ public class UserService {
 
     @Autowired
     private UserRepository userRepository;
+
+    @Autowired
+    private ViewingHistoryRepository viewingHistoryRepository;
+
+    // 아이디 중복 확인 메서드
+    public boolean isUserIdExists(String userId) {
+        return userRepository.findByUserid(userId).isPresent();
+    }
 
     public User addUser(User user) {
         return userRepository.save(user);
@@ -48,13 +58,13 @@ public class UserService {
         }
     }
 
-    public void deleteUser(String userid) {
-        Optional<User> user = userRepository.findByUserid(userid);
-        if (user.isPresent()) {
-            userRepository.deleteById(user.get().getId());
-        } else {
-            throw new EntityNotFoundException("User not found with userid: " + userid);
-        }
+    @Transactional      // 해당 어노테이션으로 인해 user를 찾는 별도의 과정은 필요없음.
+    public void deleteUser(Long userId) {
+        // ViewingHistory 데이터를 먼저 삭제
+        viewingHistoryRepository.deleteByUserId(userId);
+
+        // User 데이터를 삭제
+        userRepository.deleteById(userId);
     }
 
 }
