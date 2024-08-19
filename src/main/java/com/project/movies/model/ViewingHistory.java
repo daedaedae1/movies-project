@@ -15,7 +15,7 @@ public class ViewingHistory {
     @Column(name = "movie_id", nullable = false)
     private Long movieId;  // 영화 ID
 
-    public ViewingHistory() {}
+    public ViewingHistory() {}  // 없으면 영화 리스트에서 (보기) 누르는 게 오류난다.
 
     public ViewingHistory(Long userId, Long movieId) {
         this.userId = userId;

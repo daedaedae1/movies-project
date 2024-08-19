@@ -29,14 +29,6 @@ public interface MovieRepository extends JpaRepository<Movie, Long> {
             ")")
     List<Long> findRecommendedMovieIds(@Param("userId") Long userId);
 
-    @Query("SELECT m FROM Movie m " +
-            "JOIN ViewingHistory vh ON m.id = vh.movieId " +
-            "WHERE vh.userId IN (SELECT vh2.userId FROM ViewingHistory vh2 WHERE vh2.movieId IN :movieIds) " +
-            "AND m.id NOT IN :movieIds " +
-            "GROUP BY m.id " +
-            "ORDER BY COUNT(vh.userId) DESC")
-    List<Movie> findCollaborativeRecommendations(@Param("movieIds") List<Long> movieIds);
-
     @Query("SELECT vh.movieId FROM ViewingHistory vh WHERE vh.userId = :userId")
     List<Long> findMoviesWatchedByUser(@Param("userId") Long userId);
 

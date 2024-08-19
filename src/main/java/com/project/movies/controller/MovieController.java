@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://localhost:8081", allowCredentials = "true") // 필요한 경우 CORS 설정
+@CrossOrigin(origins = "http://localhost:8081", allowCredentials = "true") // CORS 설정
 @RequestMapping("/movies")
 public class MovieController {
 
@@ -39,12 +39,6 @@ public class MovieController {
     public List<Movie> getContentBasedRecommendations(
             @RequestParam("userId") Long userId) {
         return movieService.getContentBasedRecommendations(userId);
-    }
-
-    @GetMapping("/recommend/collaborative")
-    public List<Movie> getCollaborativeFilteringRecommendations(
-            @RequestParam("userId") Long userId) {
-        return movieService.getCollaborativeFilteringRecommendations(userId);
     }
 
 }
