@@ -58,7 +58,7 @@ public class TmdbService {
             while (page <= maxPages) {
                 String uri = UriComponentsBuilder
                         .fromHttpUrl("https://api.themoviedb.org/3/movie/popular")
-                        .queryParam("api_key", apiKey).queryParam("language", "ko-KR")
+                        .queryParam("api_key", apiKey).queryParam("language", "ja-JP")
                         .queryParam("page", page).toUriString();
                 String response = restTemplate.getForObject(uri, String.class);
                 JsonNode root = objectMapper.readTree(response);
@@ -102,11 +102,12 @@ public class TmdbService {
         return movies;
     }
 
+    // 한국어 : ko-KR
     private Map<Integer, GenreDto> fetchGenres() throws JsonProcessingException {
         String uri = UriComponentsBuilder
                 .fromHttpUrl("https://api.themoviedb.org/3/genre/movie/list")
                 .queryParam("api_key", apiKey)
-                .queryParam("language", "ko-KR").toUriString();
+                .queryParam("language", "ja-JP").toUriString();
 
         String response = restTemplate.getForObject(uri, String.class);
         JsonNode root = objectMapper.readTree(response);
@@ -125,7 +126,7 @@ public class TmdbService {
         Movie movie = new Movie();
         movie.setTmdbId(movieDto.getTmdbId());
         movie.setTitle(movieDto.getTitle());
-        movie.setOverview(movieDto.getOverview() != null ? movieDto.getOverview() : "No overview");
+        movie.setOverview(movieDto.getOverview() != null ? movieDto.getOverview() : "データがありません"); // No overview
         movie.setPosterPath(movieDto.getPosterPath());
         List<Genre> genres = new ArrayList<>();
         for (GenreDto genreDto : movieDto.getGenres()) {
@@ -149,14 +150,14 @@ public class TmdbService {
             Movie existingMovie = existingMovieOpt.get();
             // 업데이트가 필요한 필드들을 설정.
             existingMovie.setTitle(movie.getTitle());
-            existingMovie.setOverview((movie.getOverview() != null && !movie.getOverview().isEmpty()) ? movie.getOverview() : "No overview");
+            existingMovie.setOverview((movie.getOverview() != null && !movie.getOverview().isEmpty()) ? movie.getOverview() : "データがありません");
             existingMovie.setPosterPath(movie.getPosterPath());
             existingMovie.setGenres(movie.getGenres());
             // 업데이트된 엔티티를 저장.
             movieRepository.save(existingMovie);
         } else {
             // 새 영화 엔티티인 경우
-            movie.setOverview((movie.getOverview() != null && !movie.getOverview().isEmpty()) ? movie.getOverview() : "No overview");
+            movie.setOverview((movie.getOverview() != null && !movie.getOverview().isEmpty()) ? movie.getOverview() : "データがありません");
             movieRepository.save(movie);
         }
     }
