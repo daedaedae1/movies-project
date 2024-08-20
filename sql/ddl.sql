@@ -41,3 +41,10 @@ CREATE TABLE viewing_history (
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (movie_id) REFERENCES movie(id)
 );
+
+select * from movie;
+select * from genre;
+select * from movie_genre;
+select * from user;
+select * from viewing_history order by user_id, movie_id asc;
+select * from viewing_history;
