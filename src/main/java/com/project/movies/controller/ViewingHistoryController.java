@@ -23,13 +23,6 @@
             return ResponseEntity.ok(savedHistory);
         }
 
-        // 특정 사용자의 시청 기록 조회 API
-        @GetMapping("/{userid}")
-        public ResponseEntity<List<ViewingHistory>> getViewingHistory(@PathVariable("userid") Long userId) {
-            List<ViewingHistory> viewingHistory = viewingHistoryService.getViewingHistoryByUserId(userId);
-            return ResponseEntity.ok(viewingHistory);
-        }
-
         // 시청 기록 삭제 API
         @DeleteMapping
         public ResponseEntity<Void> deleteViewingHistory(
@@ -37,6 +30,13 @@
                 @RequestParam("movieId") Long movieId) {
             viewingHistoryService.deleteViewingHistory(userId, movieId);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+
+        // 특정 사용자의 시청 기록 조회 API
+        @GetMapping("/{userid}")
+        public ResponseEntity<List<ViewingHistory>> getViewingHistory(@PathVariable("userid") Long userId) {
+            List<ViewingHistory> viewingHistory = viewingHistoryService.getViewingHistoryByUserId(userId);
+            return ResponseEntity.ok(viewingHistory);
         }
 
     }

@@ -77,7 +77,7 @@ public class UserController {
     }
 
     // /api/update
-    @PostMapping("/{userid}/update")
+    @PostMapping("/details/{userid}/update")
     public ResponseEntity<?> update(@RequestBody User user) {
         // UserService를 사용하여 사용자 정보를 업데이트.
         User updatedUser = userService.updateUser(user);
@@ -91,7 +91,7 @@ public class UserController {
         }
     }
 
-    @DeleteMapping("/{userid}/delete")
+    @DeleteMapping("/details/{userid}/delete")
     public ResponseEntity<?> delete(@PathVariable("userid") Long userId) {
         userService.deleteUser(userId);
         return ResponseEntity.ok().body(Map.of("success", true));
