@@ -16,14 +16,14 @@
         @Autowired
         private ViewingHistoryService viewingHistoryService;
 
-        // 시청 기록 저장 API
+        // 視聴履歴保存API
         @PostMapping
         public ResponseEntity<ViewingHistory> saveViewingHistory(@RequestBody ViewingHistory viewingHistory) {
             ViewingHistory savedHistory = viewingHistoryService.saveViewingHistory(viewingHistory);
             return ResponseEntity.ok(savedHistory);
         }
 
-        // 시청 기록 삭제 API
+        // 視聴履歴削除API
         @DeleteMapping
         public ResponseEntity<Void> deleteViewingHistory(
                 @RequestParam("userId") Long userId,
@@ -32,7 +32,7 @@
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
 
-        // 특정 사용자의 시청 기록 조회 API
+        // 特定ユーザーの視聴履歴取得API
         @GetMapping("/{userid}")
         public ResponseEntity<List<ViewingHistory>> getViewingHistory(@PathVariable("userid") Long userId) {
             List<ViewingHistory> viewingHistory = viewingHistoryService.getViewingHistoryByUserId(userId);

@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import jakarta.servlet.http.HttpSession;
 
-@RestController		// rest와 그냥의 차이 알아두기
+@RestController
 @CrossOrigin(origins = "http://localhost:8081", allowCredentials = "true")
 @RequestMapping("/api")
 public class UserController {
@@ -26,7 +26,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    // 중복 아이디 확인 API
+    // 重複するユーザーIDの確認API
     @GetMapping("/checkUserId/{userid}")
     public ResponseEntity<?> checkUserId(@PathVariable("userid") String userid) {
         boolean exists = userService.isUserIdExists(userid);
@@ -52,7 +52,7 @@ public class UserController {
             session.setAttribute("LOGIN_USER_ID", userid);
             return ResponseEntity.ok().body(Map.of(
                     "success", true,
-                    "id", user.get().getId() // 로그인 성공 시 사용자 ID를 반환
+                    "id", user.get().getId() // ログイン成功時、DBのIDを返す
             ));
         } else {
             return ResponseEntity.badRequest().body(Map.of("success", false));
@@ -61,7 +61,7 @@ public class UserController {
 
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpSession session) {
-        // 현재 세션을 무효화
+        // 現在のセッション無効化
         session.invalidate();
         return ResponseEntity.ok().body(Map.of("success", true));
     }
@@ -76,18 +76,16 @@ public class UserController {
         }
     }
 
-    // /api/update
     @PostMapping("/details/{userid}/update")
     public ResponseEntity<?> update(@RequestBody User user) {
-        // UserService를 사용하여 사용자 정보를 업데이트.
+        // UserServiceを使用してユーザー情報を更新
         User updatedUser = userService.updateUser(user);
-        // 업데이트된 사용자 정보가 null이 아니라면 성공적으로 업데이트된 것으로 간주.
+        // 更新されたユーザー情報がnullでなければ成功
         if (updatedUser != null) {
-            // 성공적으로 업데이트되었다는 응답을 반환.
             return ResponseEntity.ok().body(Map.of("success", true, "updatedUser", updatedUser));
         } else {
-            // 업데이트에 실패했다면, 클라이언트에게 적절한 에러 메시지를 반환.
-            return ResponseEntity.badRequest().body(Map.of("success", false, "message", "User update failed."));
+            return ResponseEntity.badRequest().body(Map.of("success", false,
+                    "message", "User update failed."));
         }
     }
 

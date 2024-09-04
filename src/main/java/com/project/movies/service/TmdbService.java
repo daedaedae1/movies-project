@@ -51,7 +51,7 @@ public class TmdbService {
         int page = 1;
         final int maxPages = 20;
 
-        // 장르 목록을 미리 가져와서 캐시.
+        // ジャンル一覧を事前に取得してキャッシュ
         Map<Integer, GenreDto> genreMap = fetchGenres();
 
         try {
@@ -85,24 +85,24 @@ public class TmdbService {
                         movieDto.setGenres(genres);
                     }
 
-                    // MovieDto를 Movie 엔티티로 변환
+                    // MovieDtoをMovieエンティティに変換
                     Movie movie = convertToEntity(movieDto);
                     movies.add(movieDto);
 
-                    // Movie 엔티티 저장
+                    // Movieエンティティを保存
                     saveMovie(movie);
                 }
 
                 page++;
             }
         } catch (HttpClientErrorException e) {
-            System.err.println("API 호출 중 오류가 발생했습니다: " + e.getMessage());
+            System.err.println("API呼び出し中にエラーが発生しました。: " + e.getMessage());
         }
 
         return movies;
     }
 
-    // 한국어 : ko-KR
+    // 韓国語 : ko-KR
     private Map<Integer, GenreDto> fetchGenres() throws JsonProcessingException {
         String uri = UriComponentsBuilder
                 .fromHttpUrl("https://api.themoviedb.org/3/genre/movie/list")
@@ -146,17 +146,17 @@ public class TmdbService {
     private void saveMovie(Movie movie) {
         Optional<Movie> existingMovieOpt = movieRepository.findByTmdbId(movie.getTmdbId());
         if (existingMovieOpt.isPresent()) {
-            // 기존 영화 엔티티가 존재하는 경우
+            // 既存の映画エンティティが存在する場合
             Movie existingMovie = existingMovieOpt.get();
-            // 업데이트가 필요한 필드들을 설정.
+            // 更新が必要なフィールドを設定
             existingMovie.setTitle(movie.getTitle());
             existingMovie.setOverview((movie.getOverview() != null && !movie.getOverview().isEmpty()) ? movie.getOverview() : "データがありません");
             existingMovie.setPosterPath(movie.getPosterPath());
             existingMovie.setGenres(movie.getGenres());
-            // 업데이트된 엔티티를 저장.
+            // 更新されたエンティティを保存
             movieRepository.save(existingMovie);
         } else {
-            // 새 영화 엔티티인 경우
+            // 新しい映画エンティティの場合
             movie.setOverview((movie.getOverview() != null && !movie.getOverview().isEmpty()) ? movie.getOverview() : "データがありません");
             movieRepository.save(movie);
         }

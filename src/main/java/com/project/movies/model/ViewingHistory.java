@@ -10,19 +10,18 @@ public class ViewingHistory {
     private Long id;
 
     @Column(name = "user_id", nullable = false)
-    private Long userId;  // 사용자 ID
+    private Long userId;  // User ID
 
     @Column(name = "movie_id", nullable = false)
-    private Long movieId;  // 영화 ID
+    private Long movieId;  // Movie ID
 
-    public ViewingHistory() {}  // 없으면 영화 리스트에서 (보기) 누르는 게 오류난다.
+    public ViewingHistory() {}  // これがないと、JPAはエンティティのインスタンスを作成できず、エラーが発生
 
     public ViewingHistory(Long userId, Long movieId) {
         this.userId = userId;
         this.movieId = movieId;
     }
 
-    // Getters and Setters
     public Long getId() {
         return id;
     }

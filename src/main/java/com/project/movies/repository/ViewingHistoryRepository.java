@@ -10,9 +10,9 @@ import java.util.List;
 
 public interface ViewingHistoryRepository extends JpaRepository<ViewingHistory, Long> {
 
-    List<ViewingHistory> findByUserId(Long userId);  // 특정 사용자의 시청 기록 조회
+    List<ViewingHistory> findByUserId(Long userId);  // 特定ユーザーの視聴履歴取得
 
-    // JPA에게 이 쿼리가 INSERT, UPDATE, 또는 DELETE 작업을 수행할 것임을 알림.
+    // JPAに、このQueryがINSERT、UPDATE、またはDELETE操作を実行することを通知
     @Modifying
     @Query("DELETE FROM ViewingHistory vh WHERE vh.userId = :userId AND vh.movieId = :movieId")
     void deleteViewingHistory(@Param("userId") Long userId, @Param("movieId") Long movieId);

@@ -20,13 +20,13 @@ public class MovieService {
         this.movieRepository = movieRepository;
     }
 
-    // 페이지네이션을 위한 메소드.
+    // ページネーションのためのメソッド
     public Page<Movie> getAllMoviesPageable(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return movieRepository.findAll(pageable);
     }
 
-    // 영화 검색 메소드: 제목 포함 검색. (대소문자 및 띄어쓰기 구분 없음)
+    // 映画検索メソッド: タイトルを含む検索（大文字・小文字やスペースの区別なし）
     public Page<Movie> searchMovies(String title, int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return movieRepository.findByTitleContainingIgnoreCaseWithoutSpaces(title, pageable);
@@ -36,18 +36,18 @@ public class MovieService {
         return movieRepository.save(movie);
     }
 
-    // 컨텐츠 기반 추천 메소드.
+    // コンテンツベースの推薦メソッド
     public List<Movie> getContentBasedRecommendations(Long userId) {
-        // 사용자 시청 기록에서 장르 ID를 가져옵니다.
+        // ユーザーの視聴履歴からジャンルIDを取得
         List<Long> viewedMovieIds = movieRepository.findMoviesWatchedByUser(userId);
         if (viewedMovieIds.isEmpty()) {
-            return List.of(); // 시청 기록이 없는 경우 빈 목록 반환
+            return List.of(); // 視聴履歴がない場合は空のリストを返す
         }
 
-        // 시청 기록에 기반하여 추천할 영화의 ID 목록을 가져옵니다.
+        // 視聴履歴に基づいて推薦する映画のIDリストを取得
         List<Long> recommendedMovieIds = movieRepository.findRecommendedMovieIds(userId);
 
-        // 추천 영화 목록을 가져옵니다.
+        // 推薦映画のリストを取得
         return movieRepository.findAllById(recommendedMovieIds);
     }
 }

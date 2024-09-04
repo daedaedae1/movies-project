@@ -29,9 +29,9 @@ public class Movie {
     private String overview;
 
     @Column(name="poster_path")
-    private String posterPath; // 포스터 이미지 URL
+    private String posterPath;  // ポスター画像のパス
 
-    private Long tmdbId; // TMDB에서 제공하는 영화의 고유 ID
+    private Long tmdbId;    // TMDBから提供される映画のユニークID
 
     @ManyToMany
     @JoinTable(

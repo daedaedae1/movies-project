@@ -15,12 +15,12 @@ create table movie(
 
 CREATE TABLE genre(
    id INT AUTO_INCREMENT PRIMARY KEY,
-   name varchar(255) NOT NULL
+   name varchar(255) not null
 );
 
 CREATE TABLE movie_genre(
-   movie_id BIGINT NOT NULL,
-   genre_id INT NOT NULL,
+   movie_id BIGINT not null,
+   genre_id INT not null,
    PRIMARY KEY(movie_id, genre_id),
    FOREIGN KEY(movie_id) REFERENCES movie(id),
    FOREIGN KEY(genre_id) REFERENCES genre(id)
@@ -28,8 +28,8 @@ CREATE TABLE movie_genre(
 
 CREATE TABLE viewing_history (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    user_id BIGINT NOT NULL,
-    movie_id BIGINT NOT NULL,
+    user_id BIGINT not null,
+    movie_id BIGINT not null,
     FOREIGN KEY (user_id) REFERENCES user(id),
     FOREIGN KEY (movie_id) REFERENCES movie(id)
 );

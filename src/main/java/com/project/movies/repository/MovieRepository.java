@@ -12,7 +12,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface MovieRepository extends JpaRepository<Movie, Long> {
 
-    @Query("SELECT m FROM Movie m WHERE LOWER(REPLACE(m.title, ' ', '')) LIKE LOWER(REPLACE(CONCAT('%', :title, '%'), ' ', ''))")
+    @Query("SELECT m FROM Movie m WHERE LOWER(REPLACE(m.title, ' ', '')) " +
+            "LIKE LOWER(REPLACE(CONCAT('%', :title, '%'), ' ', ''))")
     Page<Movie> findByTitleContainingIgnoreCaseWithoutSpaces(@Param("title") String title, Pageable pageable);
 
     Optional<Movie> findByTmdbId(Long tmdbId);

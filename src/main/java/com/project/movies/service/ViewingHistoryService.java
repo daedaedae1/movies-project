@@ -12,17 +12,17 @@ public class ViewingHistoryService {
     @Autowired
     private ViewingHistoryRepository viewingHistoryRepository;
 
-    // 시청 기록 저장
-    public ViewingHistory saveViewingHistory(ViewingHistory viewingHistory) {
-        return viewingHistoryRepository.save(viewingHistory);
-    }
-
-    // 특정 사용자의 시청 기록 조회
+    // 特定ユーザーの視聴履歴取得
     public List<ViewingHistory> getViewingHistoryByUserId(Long userId) {
         return viewingHistoryRepository.findByUserId(userId);
     }
 
-    // 시청 기록 삭제 메서드
+    // 視聴履歴を保存
+    public ViewingHistory saveViewingHistory(ViewingHistory viewingHistory) {
+        return viewingHistoryRepository.save(viewingHistory);
+    }
+
+    // 視聴履歴を削除
     @Transactional
     public void deleteViewingHistory(Long userId, Long movieId) {
         viewingHistoryRepository.deleteViewingHistory(userId, movieId);
